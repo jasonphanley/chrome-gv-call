@@ -1,6 +1,6 @@
 {
   "name": "Call with Google Voice",
-  "version": "1",
+  "version": "2",
   "description": "Links phone numbers found in web pages to the Google Voice dialer.",
   "icons": {
     "48": "icon48.png",
