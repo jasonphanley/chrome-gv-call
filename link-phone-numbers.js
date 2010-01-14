@@ -4,8 +4,11 @@ var voiceBaseCallUrl = "https://www.google.com/voice/m/caller?number="
 var phoneNumberRegEx = /(?:\+?1\s?[-\.]?\s?)?(\d{3}|\(\d{3}\))\s?[-\.]?\s?(\d{3})\s?[-\.]?\s?(\d{4}(?!\d))/
 var phoneNumberRegExMatcher = new RegExp(phoneNumberRegEx)
 
+var linkClass = "google-voice-link";
+
 if (!window.location.href.match(voiceBaseUrlRegEx)) {
     linkPhoneNumbers(document.body);
+    document.body.addEventListener("DOMNodeInserted", OnNodeInserted, false);
 }
 
 function linkPhoneNumbers(node) {
@@ -28,6 +31,11 @@ function linkPhoneNumbers(node) {
                     continue;
                 }
 
+                var nextChild = child.nextSibling;
+                if (nextChild && nextChild.class == linkClass) {
+                    continue;
+                }
+
                 var image = document.createElement("img");
                 image.src = chrome.extension.getURL("icon48.png");
                 image.style.width = "1em";
@@ -36,6 +44,7 @@ function linkPhoneNumbers(node) {
                 var link = document.createElement("a");
                 link.href = voiceBaseCallUrl + encodeURIComponent(phoneNumber);
                 link.title = "Call " + phoneNumber + " with Google Voice";
+                link.class = linkClass;
                 link.style.marginLeft = "0.25em";
                 link.appendChild(image);
 
@@ -44,4 +53,13 @@ function linkPhoneNumbers(node) {
             }
         }
     }
+}
+
+var linking = false;
+
+function OnNodeInserted(event) {
+    if (linking) return;
+    linking = true;
+    linkPhoneNumbers(event.target)
+    linking = false;
 }
