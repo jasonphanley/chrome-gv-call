@@ -1,7 +1,7 @@
 var voiceBaseUrlRegEx = /^https?:\/\/www\.google\.com\/voice/
 var voiceBaseCallUrl = "https://www.google.com/voice/m/caller?number="
 
-var phoneNumberRegEx = /(?:\+?1\s?[-\.]?\s?)?(\d{3}|\(\d{3}\))\s?[-\.]?\s?(\d{3})\s?[-\.]?\s?(\d{4}(?!\d))/
+var phoneNumberRegEx = /(?:^|[\s\(])(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?![^\s\)])/
 var phoneNumberRegExMatcher = new RegExp(phoneNumberRegEx)
 
 var linkClass = "google-voice-link";
@@ -25,16 +25,12 @@ function linkPhoneNumbers(node) {
         } else if (child.nodeType == 3) {
             var phoneNumbers = phoneNumberRegExMatcher.exec(child.nodeValue);
             if (phoneNumbers) {
-                var phoneNumber = phoneNumbers[0].replace(/^\s+|\s+$/g,"");
-                var index = child.textContent.indexOf(phoneNumber);
-                if (index == -1) {
-                    continue;
-                }
-
                 var nextChild = child.nextSibling;
                 if (nextChild && nextChild.class == linkClass) {
                     continue;
                 }
+
+                var phoneNumber = "(" + (phoneNumbers[1] ? phoneNumbers[1] : phoneNumbers[2]) + ") " + phoneNumbers[3] + "-" + phoneNumbers[4];
 
                 var image = document.createElement("img");
                 image.src = chrome.extension.getURL("icon48.png");
@@ -48,7 +44,7 @@ function linkPhoneNumbers(node) {
                 link.style.marginLeft = "0.25em";
                 link.appendChild(image);
 
-                child.splitText(index + phoneNumber.length);
+                child.splitText(phoneNumbers.index + phoneNumbers[0].length);
                 node.insertBefore(link, node.childNodes[++i]);
             }
         }
