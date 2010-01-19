@@ -1,7 +1,7 @@
 var voiceBaseUrlRegEx = /^https?:\/\/www\.google\.com\/voice/
 var voiceBaseCallUrl = "https://www.google.com/voice/m/caller?number="
 
-var phoneNumberRegEx = /(?:^|[\s\(])(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?![^\s\)])/
+var phoneNumberRegEx = /(?:^|[\s\(])(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?![^\s\)x])/
 var phoneNumberRegExMatcher = new RegExp(phoneNumberRegEx)
 
 var blankTargetRegEx = /^https?:\/\/mail\.google\.com|https?:\/\/www\.google\.com\/contacts/
