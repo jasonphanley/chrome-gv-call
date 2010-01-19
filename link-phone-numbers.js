@@ -4,6 +4,8 @@ var voiceBaseCallUrl = "https://www.google.com/voice/m/caller?number="
 var phoneNumberRegEx = /(?:^|[\s\(])(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?![^\s\)])/
 var phoneNumberRegExMatcher = new RegExp(phoneNumberRegEx)
 
+var blankTargetRegEx = /^https?:\/\/mail\.google\.com|https?:\/\/www\.google\.com\/contacts/
+
 var linkClass = "google-voice-link";
 
 if (!window.location.href.match(voiceBaseUrlRegEx)) {
@@ -39,6 +41,9 @@ function linkPhoneNumbers(node) {
 
                 var link = document.createElement("a");
                 link.href = voiceBaseCallUrl + encodeURIComponent(phoneNumber);
+                if (window.location.href.match(blankTargetRegEx)) {
+                    link.target = "_blank";
+                }
                 link.title = "Call " + phoneNumber + " with Google Voice";
                 link.class = linkClass;
                 link.style.marginLeft = "0.25em";
