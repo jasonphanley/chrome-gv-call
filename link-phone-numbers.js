@@ -32,7 +32,8 @@ function linkPhoneNumbers(node) {
                     continue;
                 }
 
-                var phoneNumber = "(" + (phoneNumbers[1] ? phoneNumbers[1] : phoneNumbers[2]) + ") " + phoneNumbers[3] + "-" + phoneNumbers[4];
+                var phoneNumber = "+1" + (phoneNumbers[1] ? phoneNumbers[1] : phoneNumbers[2]) + phoneNumbers[3] + phoneNumbers[4];
+                var formattedPhoneNumber = "(" + (phoneNumbers[1] ? phoneNumbers[1] : phoneNumbers[2]) + ") " + phoneNumbers[3] + "-" + phoneNumbers[4];
 
                 var image = document.createElement("img");
                 image.src = chrome.extension.getURL("icon48.png");
@@ -40,11 +41,11 @@ function linkPhoneNumbers(node) {
                 image.style.height = "1em";
 
                 var link = document.createElement("a");
-                link.href = voiceBaseCallUrl + encodeURIComponent(phoneNumber);
+                link.href = voiceBaseCallUrl + phoneNumber;
                 if (window.location.href.match(blankTargetRegEx)) {
                     link.target = "_blank";
                 }
-                link.title = "Call " + phoneNumber + " with Google Voice";
+                link.title = "Call " + formattedPhoneNumber + " with Google Voice";
                 link.class = linkClass;
                 link.style.marginLeft = "0.25em";
                 link.appendChild(image);
